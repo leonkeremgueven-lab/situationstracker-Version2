@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SituationTracker - Deine persönliche Problemlöse-App">
+    <meta name="theme-color" content="#6366f1">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="images/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SituationTracker">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <title>SituationTracker - Deine Problemlöse-App</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-view="list" title="Situationen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span>Situationen</span>
+        </button>
+        <button class="nav-btn" data-view="dashboard" title="Dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" data-view="categories" title="Kategorien">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+            <span>Kategorien</span>
+        </button>
+    </nav>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="addSituationBtn" title="Neue Situation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 4v16m8-8H4"/>
+        </svg>
+    </button>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>📝 SituationTracker</h1>
+            <p class="subtitle">Deine persönliche Problemlöse-App</p>
+        </header>
+
+        <!-- View: Situations List -->
+        <div id="listView" class="view active">
+            <div class="view-header">
+                <h2>Meine Situationen</h2>
+                <button class="btn-icon btn-secondary" id="exportDataBtn" title="Daten exportieren">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                </button>
+                <button class="btn-icon btn-secondary" id="importDataBtn" title="Daten importieren">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                </button>
+                <input type="file" id="importFileInput" accept=".json" style="display: none;">
+            </div>
+            
+            <div class="filter-controls">
+                <select id="filterCategory" class="filter-select">
+                    <option value="">Alle Kategorien</option>
+                </select>
+                <select id="filterRating" class="filter-select">
+                    <option value="">Alle Bewertungen</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="1">⭐</option>
+                </select>
+                <select id="filterDateRange" class="filter-select">
+                    <option value="">Alle Zeiten</option>
+                    <option value="today">Heute</option>
+                    <option value="week">Letzte 7 Tage</option>
+                    <option value="month">Letzter Monat</option>
+                    <option value="year">Letztes Jahr</option>
+                    <option value="custom">Benutzerdefiniert</option>
+                </select>
+                <select id="filterMood" class="filter-select">
+                    <option value="">Alle Stimmungen</option>
+                    <option value="5">😊 Sehr gut</option>
+                    <option value="4">🙂 Gut</option>
+                    <option value="3">😐 Neutral</option>
+                    <option value="2">😟 Schlecht</option>
+                    <option value="1">😞 Sehr schlecht</option>
+                </select>
+            </div>
+            
+            <div id="customDateRange" class="custom-date-range" style="display: none;">
+                <input type="date" id="filterDateFrom" class="filter-date">
+                <span>bis</span>
+                <input type="date" id="filterDateTo" class="filter-date">
+                <button class="btn-primary btn-sm" id="applyCustomDate">Anwenden</button>
+            </div>
+            
+            <div id="situationsList" class="situations-list">
+                <!-- Situations werden hier dynamisch eingefügt -->
+            </div>
+            <div id="emptyState" class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <h3>Keine Situationen</h3>
+                <p>Erfasse deine erste Situation mit dem + Button</p>
+            </div>
+        </div>
+
+        <!-- View: Dashboard -->
+        <div id="dashboardView" class="view">
+            <div class="view-header">
+                <h2>Dashboard & Analyse</h2>
+            </div>
+            <div class="dashboard-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="totalSituations">0</div>
+                        <div class="stat-label">Situationen</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏷️</div>
+                        <div class="stat-value" id="totalCategories">0</div>
+                        <div class="stat-label">Kategorien</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="avgRating">0</div>
+                        <div class="stat-label">Ø Bewertung</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value" id="avgSolved">0%</div>
+                        <div class="stat-label">Ø Lösungsgrad</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">😊</div>
+                        <div class="stat-value" id="avgMood">-</div>
+                        <div class="stat-label">Ø Stimmung</div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h3>Häufigste Kategorien</h3>
+                    <div id="categoryChart" class="category-chart">
+                        <!-- Chart wird dynamisch erstellt -->
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h3>Verlauf (letzte 30 Tage)</h3>
+                    <div id="timelineChart" class="timeline-chart">
+                        <!-- Timeline wird dynamisch erstellt -->
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h3>Stimmungsverlauf</h3>
+                    <div id="moodChart" class="mood-chart">
+                        <!-- Mood chart wird dynamisch erstellt -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Categories -->
+        <div id="categoriesView" class="view">
+            <div class="view-header">
+                <h2>Kategorien verwalten</h2>
+                <button class="btn-primary" id="addCategoryBtn">+ Neue Kategorie</button>
+            </div>
+            <div id="categoriesList" class="categories-list">
+                <!-- Kategorien werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Add/Edit Situation -->
+    <div id="situationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Neue Situation</h2>
+                <button class="modal-close" id="closeSituationModal">&times;</button>
+            </div>
+            <form id="situationForm" class="modal-body">
+                <input type="hidden" id="situationId">
+                
+                <div class="form-group">
+                    <label for="situationTitle">Was ist passiert? *</label>
+                    <input type="text" id="situationTitle" required placeholder="z.B. Kundengespräch bei Firma X">
+                </div>
+
+                <div class="form-group">
+                    <label for="situationProblem">Das Problem *</label>
+                    <textarea id="situationProblem" required rows="3" placeholder="Was genau war die Herausforderung?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="situationSolution">Die Lösung</label>
+                    <textarea id="situationSolution" rows="3" placeholder="Wie hast du es gelöst oder wie hättest du es lösen können?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="situationNotes">Reflexion & Notizen</label>
+                    <textarea id="situationNotes" rows="3" placeholder="Was habe ich gelernt? Was mache ich nächstes Mal anders?"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="situationDate">Datum</label>
+                        <input type="date" id="situationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="situationTime">Uhrzeit</label>
+                        <input type="time" id="situationTime">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Wie hast du dich gefühlt?</label>
+                    <div class="mood-selector" id="moodSelector">
+                        <button type="button" class="mood-btn" data-mood="5" title="Sehr gut">😊</button>
+                        <button type="button" class="mood-btn" data-mood="4" title="Gut">🙂</button>
+                        <button type="button" class="mood-btn active" data-mood="3" title="Neutral">😐</button>
+                        <button type="button" class="mood-btn" data-mood="2" title="Schlecht">😟</button>
+                        <button type="button" class="mood-btn" data-mood="1" title="Sehr schlecht">😞</button>
+                    </div>
+                    <input type="hidden" id="situationMood" value="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="situationSolved">Lösungsgrad: <span id="solvedPercentLabel">50%</span></label>
+                    <input type="range" id="situationSolved" min="0" max="100" value="50" step="5" class="slider">
+                    <div class="slider-labels">
+                        <span>0%<br>Nicht gelöst</span>
+                        <span>50%<br>Teilweise</span>
+                        <span>100%<br>Komplett</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Kategorien</label>
+                    <div id="categoryCheckboxes" class="category-checkboxes">
+                        <!-- Kategorien werden dynamisch eingefügt -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="situationRating">Bewertung</label>
+                    <div class="star-rating" id="starRating">
+                        <button type="button" class="star" data-rating="1">★</button>
+                        <button type="button" class="star" data-rating="2">★</button>
+                        <button type="button" class="star" data-rating="3">★</button>
+                        <button type="button" class="star" data-rating="4">★</button>
+                        <button type="button" class="star" data-rating="5">★</button>
+                    </div>
+                    <input type="hidden" id="situationRating" value="3">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelSituation">Abbrechen</button>
+                    <button type="submit" class="btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add/Edit Category -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="categoryModalTitle">Neue Kategorie</h2>
+                <button class="modal-close" id="closeCategoryModal">&times;</button>
+            </div>
+            <form id="categoryForm" class="modal-body">
+                <input type="hidden" id="categoryId">
+                
+                <div class="form-group">
+                    <label for="categoryName">Name *</label>
+                    <input type="text" id="categoryName" required placeholder="z.B. Sprachkenntnisse">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryColor">Farbe</label>
+                    <div class="color-picker">
+                        <input type="color" id="categoryColor" value="#6366f1">
+                        <input type="text" id="categoryColorHex" value="#6366f1" pattern="^#[0-9A-Fa-f]{6}$">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelCategory">Abbrechen</button>
+                    <button type="submit" class="btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: View Situation Details -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="viewTitle"></h2>
+                <button class="modal-close" id="closeViewModal">&times;</button>
+            </div>
+            <div class="modal-body" id="viewContent">
+                <!-- Content wird dynamisch eingefügt -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" id="closeView">Schließen</button>
+                <button type="button" class="btn-primary" id="editSituation">Bearbeiten</button>
+                <button type="button" class="btn-danger" id="deleteSituation">Löschen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/register-sw.js"></script>
+</body>
+</html>
