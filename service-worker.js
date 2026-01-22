@@ -8,14 +8,14 @@ const CACHE_NAME = `situationtracker-${CACHE_VERSION}`;
 
 // Dateien, die beim Installation gecacht werden sollen
 const STATIC_CACHE_URLS = [
-    '/',
-    '/index.html',
-    '/css/styles.css',
-    '/js/app.js',
-    '/js/register-sw.js',
-    '/manifest.json',
-    '/images/icon-192x192.png',
-    '/images/icon-512x512.png'
+    './',
+    './index.html',
+    './css/styles.css',
+    './js/app.js',
+    './js/register-sw.js',
+    './manifest.json',
+    './images/icon-192x192.png',
+    './images/icon-512x512.png'
 ];
 
 // ===========================
@@ -125,7 +125,7 @@ self.addEventListener('fetch', event => {
                         
                         // Offline-Fallback für HTML-Seiten
                         if (request.destination === 'document') {
-                            return caches.match('/index.html');
+                            return caches.match('./index.html');
                         }
                         
                         throw error;
