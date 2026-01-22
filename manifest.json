@@ -3,60 +3,60 @@
   "short_name": "SituationTracker",
   "description": "Eine minimalistische PWA mit Notizen, Stimmungs-Tracking, Lösungsgrad und Export/Import-Funktion zum Dokumentieren und Reflektieren von schwierigen Situationen.",
   "version": "2.0.0",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#6366f1",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "./",
   "lang": "de-DE",
   "dir": "ltr",
   "categories": ["productivity", "lifestyle", "education"],
   "icons": [
     {
-      "src": "/images/icon-72x72.png",
+      "src": "./images/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-96x96.png",
+      "src": "./images/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-128x128.png",
+      "src": "./images/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-144x144.png",
+      "src": "./images/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-152x152.png",
+      "src": "./images/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-192x192.png",
+      "src": "./images/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/icon-384x384.png",
+      "src": "./images/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icon-512x512.png",
+      "src": "./images/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -67,10 +67,10 @@
       "name": "Neue Situation",
       "short_name": "Neue Situation",
       "description": "Erfasse eine neue Situation",
-      "url": "/?action=new",
+      "url": "./?action=new",
       "icons": [
         {
-          "src": "/images/icon-192x192.png",
+          "src": "./images/icon-192x192.png",
           "sizes": "192x192"
         }
       ]
@@ -79,10 +79,10 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "Öffne das Dashboard",
-      "url": "/?view=dashboard",
+      "url": "./?view=dashboard",
       "icons": [
         {
-          "src": "/images/icon-192x192.png",
+          "src": "./images/icon-192x192.png",
           "sizes": "192x192"
         }
       ]
